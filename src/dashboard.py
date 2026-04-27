@@ -29,6 +29,22 @@ st.subheader("Daily Cost Trend")
 daily_cost = df.groupby(df['timestamp'].dt.date)['total_cost'].sum()
 st.line_chart(daily_cost)
 
+st.subheader("Weekly Usage")
+
+weekly_usage = df.groupby(df['timestamp'].dt.to_period('W'))['usage_hours'].sum()
+weekly_usage.index = weekly_usage.index.astype(str)
+
+st.line_chart(weekly_usage)
+st.dataframe(weekly_usage)
+
+st.subheader("Monthly Usage")
+
+monthly_usage = df.groupby(df['timestamp'].dt.to_period('M'))['usage_hours'].sum()
+monthly_usage.index = monthly_usage.index.astype(str)
+
+st.line_chart(monthly_usage)
+st.dataframe(monthly_usage)
+
 st.subheader("Anomalies")
 threshold = df['total_cost'].mean() * 2
 st.dataframe(df[df['total_cost'] > threshold])
